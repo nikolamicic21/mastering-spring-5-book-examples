@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Details</title>
+</head>
+<body>
+<p>
+    <button id="subscribe-button">Get Latest Stock Price</button>
+    <button id="list-stocks-button">List All Stocks</button>
+    <button id="ibm-stock-details-button">Show IBM Details</button>
+    <ul id="display"></ul>
+</p>
+<script>
+    function addEvent(event, element, callback) {
+        if (typeof(EventSource) !== "undefined") {
+            element.addEventListener(event, callback, false);
+        } else {
+            element[event] = callback;
+        }
+    }
+
+    function registerEventSourceAndAddResponse(uri, elementId) {
+        const targetElement = document.querySelector("#" + elementId);
+        const eventSource = new EventSource(uri);
+        eventSource.onmessage = (event) => {
+            const newElement = document.createElement("li");
+            newElement.innerHTML = event.data;
+            targetElement.appendChild(newElement);
+        };
+    }
+
+    addEvent("click", document.querySelector("#subscribe-button"), () => {
+        registerEventSourceAndAddResponse("/stocks/price/acme", "display");
+    });
+
+    addEvent("click", document.querySelector("#list-stocks-button"), () => {
+        registerEventSourceAndAddResponse("/stocks", "display");
+    });
+
+    addEvent("click", document.querySelector("#ibm-stock-details-button"), () => {
+        registerEventSourceAndAddResponse("/stocks/IBM", "display");
+    });
+</script>
+</body>
+</html>
