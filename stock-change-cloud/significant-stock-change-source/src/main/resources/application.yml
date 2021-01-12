@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: stock-change-exchange
+          content-type: application/json

@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: stock-change-exchange
+          group: stock-change
+        output:
+          destination: stock-with-holdings-exchange
+          content-type: application/json

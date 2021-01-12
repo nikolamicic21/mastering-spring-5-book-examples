@@ -7,6 +7,10 @@ plugins {
 	kotlin("plugin.spring") version "1.4.21"
 }
 
+repositories {
+	mavenCentral()
+}
+
 subprojects {
 
 	apply(plugin = "org.springframework.boot")
@@ -21,8 +25,17 @@ subprojects {
 		targetCompatibility = JavaVersion.VERSION_1_8
 	}
 
+	extra["springCloudVersion"] = "2020.0.0"
+
 	repositories {
 		mavenCentral()
+		maven { url = uri("https://repo.spring.io/milestone") }
+	}
+
+	dependencyManagement {
+		imports {
+			mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+		}
 	}
 
 	configurations {
